@@ -31,9 +31,10 @@ app.use(
 );
 app.use(express.json());
 
-await connectDB(); // ✅ ensures models exist
+// ✅ Initialize DB ONCE
+await connectDB();
 
-// Routes
+// ✅ Mount routes (no need to pass sequelize)
 app.use("/v1", userRoutes);
 
 // 404 + error handlers

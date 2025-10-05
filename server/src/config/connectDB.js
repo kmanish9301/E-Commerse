@@ -1,11 +1,13 @@
-import { Sequelize } from "sequelize";
 import chalk from "chalk";
+import { Sequelize } from "sequelize";
 import initModels from "../models/index.js";
 
 let sequelize;
-let db = {};
+let db;
 
 export const connectDB = async () => {
+  if (sequelize && db) return { sequelize, db }; // prevent reinitialization
+
   sequelize = new Sequelize(
     process.env.DB_NAME,
     process.env.DB_USER,
@@ -31,10 +33,12 @@ export const connectDB = async () => {
     db = initModels(sequelize);
     await sequelize.sync({ alter: true });
     console.log(chalk.green("✅ Tables synced"));
+
+    return { sequelize, db };
   } catch (err) {
     console.error(chalk.red("❌ DB connection failed:"), err);
     process.exit(1);
   }
 };
 
-export { sequelize, db };
+export { db, sequelize };

@@ -1,9 +1,8 @@
 import express from "express";
 import { registerUser } from "../controllers/AuthController.js";
-import { sequelize } from "../config/connectDB.js";
 
-const routes = express.Router();
+const router = express.Router();
 
-routes.post("/auth/register", registerUser(sequelize));
+router.post("/auth/register", registerUser);
 
-export default routes;
+export default router;
