@@ -31,7 +31,11 @@ export const generateAuthTokens = (user) => {
       throw new Error("User object must have id and email");
     }
 
-    const payload = { id: user.id, email: user.email };
+    const payload = {
+      id: user.id,
+      email: user.email,
+      user_name: user.user_name,
+    };
 
     const accessToken = generateToken(
       payload,

@@ -20,11 +20,11 @@ export const connectDB = async () => {
     }
   );
 
-  console.log("Connecting to PostgreSQL:", {
-    database: process.env.DB_NAME,
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-  });
+  // console.log("Connecting to PostgreSQL:", {
+  //   database: process.env.DB_NAME,
+  //   user: process.env.DB_USER,
+  //   host: process.env.DB_HOST,
+  // });
 
   try {
     await sequelize.authenticate();

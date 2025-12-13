@@ -40,7 +40,7 @@ const UserModel = (sequelize) => {
       timestamps: true,
       tableName: "users",
       defaultScope: {
-        attributes: { exclude: ["original_password", "password"] },
+        attributes: { exclude: ["original_password"] },
       },
     }
   );
