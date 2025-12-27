@@ -10,6 +10,7 @@ import {
 } from "./src/middlewares/ErrorMiddleware.js";
 import authRoutes from "./src/routes/AuthRoute.js";
 import userRoutes from "./src/routes/UserRoute.js";
+import productRoutes from "./src/routes/ProductRoute.js";
 
 const envFile =
   process.env.NODE_ENV === "production"
@@ -38,6 +39,7 @@ await connectDB();
 // ✅ Mount routes (no need to pass sequelize)
 app.use("/v1", authRoutes);
 app.use("/v1", userRoutes);
+app.use("/v1", productRoutes);
 
 // 404 + error handlers
 app.use(NotFoundError);

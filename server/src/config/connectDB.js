@@ -32,6 +32,7 @@ export const connectDB = async () => {
 
     db = initModels(sequelize);
     await sequelize.sync({ alter: true });
+    // await sequelize.sync({ force: true });
     console.log(chalk.green("✅ Tables synced"));
 
     return { sequelize, db };

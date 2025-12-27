@@ -9,22 +9,44 @@ const ProductModel = (sequelize) => {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
-      name: {
+      external_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        unique: true,
+      },
+      title: {
         type: DataTypes.STRING,
         allowNull: false,
       },
+
       price: {
         type: DataTypes.FLOAT,
         allowNull: false,
       },
+
       description: {
         type: DataTypes.TEXT,
-        allowNull: true,
+      },
+
+      category: {
+        type: DataTypes.STRING,
+      },
+
+      image: {
+        type: DataTypes.STRING,
+      },
+
+      rating_rate: {
+        type: DataTypes.FLOAT,
+      },
+
+      rating_count: {
+        type: DataTypes.INTEGER,
       },
     },
     {
-      timestamps: true,
       tableName: "products",
+      timestamps: true,
     }
   );
 
