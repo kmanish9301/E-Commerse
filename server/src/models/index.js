@@ -25,6 +25,16 @@ const initModels = (sequelize) => {
     onDelete: "CASCADE",
   });
 
+  UserProduct.belongsTo(Product, {
+    foreignKey: "productId",
+    as: "product",
+  });
+
+  UserProduct.belongsTo(User, {
+    foreignKey: "userId",
+    as: "users",
+  });
+
   // Return all models as a single object
   return { User, Product, UserProduct };
 };

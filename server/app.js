@@ -9,8 +9,9 @@ import {
   errorHandler,
 } from "./src/middlewares/ErrorMiddleware.js";
 import authRoutes from "./src/routes/AuthRoute.js";
-import userRoutes from "./src/routes/UserRoute.js";
 import productRoutes from "./src/routes/ProductRoute.js";
+import userProductRoute from "./src/routes/UserProductMappingRoute.js";
+import userRoutes from "./src/routes/UserRoute.js";
 
 const envFile =
   process.env.NODE_ENV === "production"
@@ -40,6 +41,7 @@ await connectDB();
 app.use("/v1", authRoutes);
 app.use("/v1", userRoutes);
 app.use("/v1", productRoutes);
+app.use("/v1", userProductRoute);
 
 // 404 + error handlers
 app.use(NotFoundError);

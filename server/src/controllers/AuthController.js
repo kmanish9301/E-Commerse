@@ -91,3 +91,28 @@ export const loginUser = expressAsyncHandler(async (req, res) => {
     },
   });
 });
+
+export const generateAccessToken = expressAsyncHandler(async (req, res) => {
+  try {
+    const { User } = db;
+    const { userId } = req.params;
+    if (!userId) {
+      return res.status(400).json({ error: true, message: "UserID not found" });
+    }
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(400).json({ error: true, message: "User not found" });
+    }
+    const tokens = generateAuthTokens(user);
+    if (!tokens) {
+      return res.status(400).json({ error: true, message: "Invalid token" });
+    }
+    return res.status(200).json({
+      success: true,
+      tokens,
+      message: "Token generated successfully...!",
+    });
+  } catch (error) {
+    console.log("error:", error);
+  }
+});
