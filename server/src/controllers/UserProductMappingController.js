@@ -7,7 +7,6 @@ export const addToCart = expressAsyncHandler(async (req, res) => {
 
     const { productId, quantity = 1 } = req.body;
     const userId = req.user.id;
-    console.log("🚀 ~ userId:", userId);
 
     if (!userId) {
       return res
@@ -89,5 +88,90 @@ export const getUsersCartDetails = expressAsyncHandler(async (req, res) => {
     });
   } catch (error) {
     console.log("error : ", error);
+  }
+});
+
+export const updateUserCart = expressAsyncHandler(async (req, res) => {
+  try {
+    const { UserProduct } = db;
+    const userId = req.user.id;
+    const { productId, quantity } = req.body;
+
+    if (!productId) {
+      return res.status(400).json({
+        error: true,
+        message: "productId not provided",
+      });
+    }
+
+    if (quantity === undefined || quantity < 1) {
+      return res.status(400).json({
+        error: true,
+        message: "Quantity must be >= 1",
+      });
+    }
+
+    // Update ONLY this user's cart
+    const [updatedCount] = await UserProduct.update(
+      { quantity },
+      { where: { userId, productId } },
+    );
+
+    if (updatedCount === 0) {
+      return res.status(404).json({
+        error: true,
+        message: "Product not found in cart",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Cart updated successfully",
+    });
+  } catch (error) {
+    console.error("Update cart error:", error);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+    });
+  }
+});
+
+export const deleteUserCart = expressAsyncHandler(async (req, res) => {
+  try {
+    const { UserProduct } = db;
+    const userId = req.user.id;
+    const { productId } = req.params;
+
+    if (!productId) {
+      return res.status(400).json({
+        error: true,
+        message: "productId not provided",
+      });
+    }
+
+    const deletedCount = await UserProduct.destroy({
+      where: {
+        userId,
+        productId,
+      },
+    });
+
+    if (deletedCount === 0) {
+      return res
+        .status(400)
+        .json({ error: true, message: "Product not found in cart" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Product removed from cart successfully",
+    });
+  } catch (error) {
+    console.error("Delete cart error:", error);
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+    });
   }
 });
