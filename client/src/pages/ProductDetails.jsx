@@ -11,6 +11,10 @@ const ProductDetails = () => {
   const dispatch = useDispatch();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  console.log("loading", loading);
+
+  // asdasdas
+  // fdfsdfsdfs
   const [error, setError] = useState("");
 
   useEffect(() => {
