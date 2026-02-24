@@ -9,7 +9,14 @@ export const getAllProductsFromFakeStoreAPI = expressAsyncHandler(
     const { Product } = db;
 
     // Fetch products from free API
-    const { data } = await axios.get("https://fakestoreapi.com/products");
+    // Adding headers (User-Agent and Accept-Encoding) to prevent 403 errors on production servers like Render
+    const { data } = await axios.get("https://fakestoreapi.com/products", {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip, deflate, br",
+      },
+    });
 
     // Transform API data to match your model
     const formattedProducts = data.map((item) => ({

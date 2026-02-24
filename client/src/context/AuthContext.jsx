@@ -1,36 +1,23 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState } from "react";
 import api from "../services/api";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem("token") || null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (token) {
-      // Potentially validate token or fetch user profile here
-      // For now, we'll assume if token exists, user is logged in (simplified)
-      // You might want to decode the token to get user info if available or make a /me call
-      // But based on the provided backend code, the login returns user details.
-      // We can store user details in localStorage too for persistence or fetch them.
-      // For this implementation, I'll rely on the login response to set user.
-      // If page reloads, we might lose user details if not persisted.
-      // Let's persist user in localStorage as well for simplicity.
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        setUser(JSON.parse(storedUser));
-      }
-    }
-    setLoading(false);
-  }, [token]);
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+  const [token, setToken] = useState(
+    () => localStorage.getItem("token") || null,
+  );
+  const loading = false;
 
   const login = async (email, password) => {
     try {
       const response = await api.post("/auth/login", { email, password });
       if (response.data.success) {
-        const { user_details, accessToken } = response.data; // Check backend response structure
+        const { user_details } = response.data; // Check backend response structure
         // Backend: user_details: { id, user_name, email, accessToken } linked to line 86 in AuthController.js
         // Wait, line 86 says message structure.
         // Line 86: user_details: { ... }
@@ -91,4 +78,5 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => useContext(AuthContext);
